@@ -22,47 +22,47 @@ import java.io.IOException;
  */
 public class Searcher {
 
-    public static void main(String[] args) throws IllegalArgumentException, IOException, ParseException {
+    public static void main(String[] args)
+            throws IllegalArgumentException, IOException, ParseException {
         if (args.length != 2) {
-            throw new IllegalArgumentException("Usage: java " + Searcher.class.getName()
-                    + " <index dir> <query>");
+            throw new IllegalArgumentException(
+                    "Usage: java " + Searcher.class.getName() + " <index dir> <query>");
         }
 
-        String indexDir = args[0];               //1
-        String q = args[1];                      //2
+        String indexDir = args[0];                            //1
+        String q = args[1];                                   //2
 
         search(indexDir, q);
     }
 
     public static void search(String indexDir, String q)
             throws IOException, ParseException {
-
         Directory dir = FSDirectory.open(new File(indexDir)); //3
         IndexSearcher is = new IndexSearcher(dir);            //3
 
         QueryParser parser = new QueryParser(
-                Version.LUCENE_30,                        //4
-                "contents",                               //4
-                new StandardAnalyzer(Version.LUCENE_30)); //4
-        Query query = parser.parse(q);                    //4
+                Version.LUCENE_30,                            //4
+                "contents",                                   //4
+                new StandardAnalyzer(Version.LUCENE_30));     //4
+        Query query = parser.parse(q);                        //4
         long start = System.currentTimeMillis();
-        TopDocs hits = is.search(query, 10); //5
+        TopDocs hits = is.search(query, 10);                  //5
         long end = System.currentTimeMillis();
 
-        System.err.println("Found " + hits.totalHits +       //6
-                " document(s) (in " + (end - start) +        //6
-                " milliseconds) that matched query '" +      //6
-                q + "':");                                   //6
+        System.err.println("Found " + hits.totalHits +        //6
+                " document(s) (in " + (end - start) +         //6
+                " milliseconds) that matched query '" +       //6
+                q + "':");                                    //6
 
         for (ScoreDoc scoreDoc : hits.scoreDocs) {
-            Document doc = is.doc(scoreDoc.doc);             //7
-            System.out.println(doc.get("fullpath"));         //8
+            Document doc = is.doc(scoreDoc.doc);              //7
+            System.out.println(doc.get("fullpath"));          //8
         }
 
-        is.close();                                          //9
+        is.close();                                           //9
     }
-}
 
+}
 /*
 #1 Parse provided index directory
 #2 Parse provided query string

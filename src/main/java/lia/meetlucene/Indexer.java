@@ -22,13 +22,14 @@ public class Indexer {
 
     public static void main(String[] args) throws Exception {
         if (args.length != 2) {
-            throw new IllegalArgumentException("Usage: java " + Indexer.class.getName()
-                    + " <index dir> <data dir>");
+            throw new IllegalArgumentException(
+                    "Usage: java " + Indexer.class.getName() + " <index dir> <data dir>");
         }
+
         String indexDir = args[0];         //1
         String dataDir = args[1];          //2
 
-        long start = System.currentTimeMillis();
+        long beg = System.currentTimeMillis();
         Indexer indexer = new Indexer(indexDir);
         int numIndexed;
         try {
@@ -37,8 +38,7 @@ public class Indexer {
             indexer.close();
         }
         long end = System.currentTimeMillis();
-
-        System.out.println("Indexing " + numIndexed + " files took " + (end - start) + " milliseconds");
+        System.out.println("Indexing " + numIndexed + " files took " + (end - beg) + " milliseconds");
     }
 
     private IndexWriter writer;
@@ -58,7 +58,6 @@ public class Indexer {
 
     public int index(String dataDir, FileFilter filter) throws Exception {
         File[] files = new File(dataDir).listFiles();
-
         for (File f : files) {
             if (!f.isDirectory()
                     && !f.isHidden()
@@ -68,7 +67,6 @@ public class Indexer {
                 indexFile(f);
             }
         }
-
         return writer.numDocs();                         //5
     }
 
@@ -91,8 +89,8 @@ public class Indexer {
         Document doc = getDocument(f);
         writer.addDocument(doc);                              //10
     }
-}
 
+}
 /*
 #1  Create index in this directory
 #2  Index *.txt files from this directory
