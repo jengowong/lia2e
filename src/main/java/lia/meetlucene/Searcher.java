@@ -35,31 +35,30 @@ public class Searcher {
         search(indexDir, q);
     }
 
-    public static void search(String indexDir, String q)
-            throws IOException, ParseException {
+    public static void search(String indexDir, String qStr) throws IOException, ParseException {
         Directory dir = FSDirectory.open(new File(indexDir)); //3
-        IndexSearcher is = new IndexSearcher(dir);            //3
+        IndexSearcher iSearcher = new IndexSearcher(dir);     //3
 
-        QueryParser parser = new QueryParser(
+        QueryParser qParser = new QueryParser(
                 Version.LUCENE_30,                            //4
                 "contents",                                   //4
                 new StandardAnalyzer(Version.LUCENE_30));     //4
-        Query query = parser.parse(q);                        //4
-        long start = System.currentTimeMillis();
-        TopDocs hits = is.search(query, 10);                  //5
+        Query q = qParser.parse(qStr);                        //4
+        long beg = System.currentTimeMillis();
+        TopDocs tds = iSearcher.search(q, 10);                //5
         long end = System.currentTimeMillis();
 
-        System.err.println("Found " + hits.totalHits +        //6
-                " document(s) (in " + (end - start) +         //6
-                " milliseconds) that matched query '" +       //6
-                q + "':");                                    //6
+        System.err.println("Found " + tds.totalHits +         //6
+                " document(s) (in " + (end - beg) +           //6
+                " millis) that matched query '" +             //6
+                qStr + "':");                                 //6
 
-        for (ScoreDoc scoreDoc : hits.scoreDocs) {
-            Document doc = is.doc(scoreDoc.doc);              //7
+        for (ScoreDoc sd : tds.scoreDocs) {
+            Document doc = iSearcher.doc(sd.doc);             //7
             System.out.println(doc.get("fullpath"));          //8
         }
 
-        is.close();                                           //9
+        iSearcher.close();                                    //9
     }
 
 }

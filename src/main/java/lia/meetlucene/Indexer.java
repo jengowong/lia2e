@@ -26,8 +26,8 @@ public class Indexer {
                     "Usage: java " + Indexer.class.getName() + " <index dir> <data dir>");
         }
 
-        String indexDir = args[0];         //1
-        String dataDir = args[1];          //2
+        String indexDir = args[0];                                //1
+        String dataDir = args[1];                                 //2
 
         long beg = System.currentTimeMillis();
         Indexer indexer = new Indexer(indexDir);
@@ -46,14 +46,14 @@ public class Indexer {
     public Indexer(String indexDir) throws IOException {
         Directory dir = FSDirectory.open(new File(indexDir));
         writer = new IndexWriter(
-                dir,                                     //3
-                new StandardAnalyzer(Version.LUCENE_30), //3
-                true,                                    //3
-                IndexWriter.MaxFieldLength.UNLIMITED);   //3
+                dir,                                              //3
+                new StandardAnalyzer(Version.LUCENE_30),          //3
+                true,                                             //3
+                IndexWriter.MaxFieldLength.UNLIMITED);            //3
     }
 
     public void close() throws IOException {
-        writer.close();                                  //4
+        writer.close();                                           //4
     }
 
     public int index(String dataDir, FileFilter filter) throws Exception {
@@ -67,7 +67,7 @@ public class Indexer {
                 indexFile(f);
             }
         }
-        return writer.numDocs();                         //5
+        return writer.numDocs();                                  //5
     }
 
     private static class TextFilesFilter implements FileFilter {
@@ -87,7 +87,7 @@ public class Indexer {
     private void indexFile(File f) throws Exception {
         System.out.println("Indexing " + f.getCanonicalPath());
         Document doc = getDocument(f);
-        writer.addDocument(doc);                              //10
+        writer.addDocument(doc);                                  //10
     }
 
 }

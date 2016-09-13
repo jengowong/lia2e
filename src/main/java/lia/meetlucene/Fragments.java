@@ -20,10 +20,10 @@ public class Fragments {
 
     public void simpleSearch() throws IOException {
         Directory dir = FSDirectory.open(new File("/tmp/index"));
-        IndexSearcher searcher = new IndexSearcher(dir);
+        IndexSearcher iSearcher = new IndexSearcher(dir);
         Query q = new TermQuery(new Term("contents", "lucene"));
-        TopDocs hits = searcher.search(q, 10);
-        searcher.close();
+        TopDocs tds = iSearcher.search(q, 10);
+        iSearcher.close();
     }
 
 }
