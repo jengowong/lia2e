@@ -18,10 +18,11 @@ public class SpecialsFilter extends Filter {
         this.accessor = accessor;
     }
 
+    @Override
     public DocIdSet getDocIdSet(IndexReader reader) throws IOException {
         OpenBitSet bits = new OpenBitSet(reader.maxDoc());
 
-        String[] isbns = accessor.isbns();                       // #1
+        String[] isbns = accessor.isbns();                                   // #1
 
         int[] docs = new int[1];
         int[] freqs = new int[1];
@@ -30,9 +31,9 @@ public class SpecialsFilter extends Filter {
             if (isbn != null) {
                 TermDocs termDocs = reader.termDocs(new Term("isbn", isbn)); // #2
                 int count = termDocs.read(docs, freqs);
-                if (count == 1) {                                // #3
-                    bits.set(docs[0]);                           // #3
-                }                                                // #3
+                if (count == 1) {                                            // #3
+                    bits.set(docs[0]);                                       // #3
+                }                                                            // #3
             }
         }
         return bits;
